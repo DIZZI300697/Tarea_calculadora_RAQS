@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button8).setOnClickListener(v -> appendNumber("8"));
         findViewById(R.id.button9).setOnClickListener(v -> appendNumber("9"));
 
-        findViewById(R.id.buttonClear).setOnClickListener(v -> clear());
+        findViewById(R.id.buttonClear).setOnClickListener(v -> clearLast());
+        findViewById(R.id.buttonC).setOnClickListener(v -> clear());
+        findViewById(R.id.buttonPercentage).setOnClickListener(v -> calculatePercentage());
         findViewById(R.id.buttonDivide).setOnClickListener(v -> setOperator("/"));
         findViewById(R.id.buttonMultiply).setOnClickListener(v -> setOperator("*"));
         findViewById(R.id.buttonSubtract).setOnClickListener(v -> setOperator("-"));
@@ -55,9 +57,15 @@ public class MainActivity extends AppCompatActivity {
         processTextView.setText(process.toString());
     }
 
+    private void clearLast() {
+        if (process.length() > 0) {
+            process.deleteCharAt(process.length() - 1);
+            processTextView.setText(process.toString());
+        }
+    }
+
     private void clear() {
         process.setLength(0);
-        operator = "";
         processTextView.setText("");
         resultTextView.setText("");
         firstNumber = Double.NaN;
@@ -76,6 +84,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void calculatePercentage() {
+        if (process.length() > 0) {
+            double value = Double.parseDouble(process.toString());
+            double percent = value / 100;
+            process.setLength(0);
+            process.append(decimalFormat.format(percent));
+            processTextView.setText(process.toString());
+        }
+    }
     private void calculate() {
         if (process.length() > 0 || !Double.isNaN(firstNumber)) {
             if (Double.isNaN(firstNumber)) {
@@ -113,4 +130,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
 
